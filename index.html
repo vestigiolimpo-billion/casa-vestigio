@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa Vestigio — Ventas privadas curadas</title>
+<meta name="description" content="Valoramos, investigamos y presentamos sus piezas ante compradores reales. Nada se deja al azar. Ventas privadas curadas en residencias.">
+
+<style>
+  /* ============================================================
+     CASA VESTIGIO — Sistema de diseño
+     Paleta oficial del manual de marca (sección 9)
+     ============================================================ */
+  :root{
+    --verde:#0E4B36;
+    --beige:#EFE4CC;
+    --blanco-calido:#FFFDF5;
+    --dorado:#B28A3D;
+    --vinotinto:#5B0F1A;
+    --azul:#0B2D63;
+    --verde-tenue:rgba(14,75,54,.08);
+    --dorado-tenue:rgba(178,138,61,.30);
+    --sombra:0 1px 2px rgba(14,75,54,.04), 0 12px 40px rgba(14,75,54,.07);
+    --radio:2px;
+    --serif:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+    --sans:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Hanken+Grotesk:wght@400;500;600&display=swap');
+
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  html{scroll-behavior:smooth}
+
+  body{
+    font-family:var(--sans);
+    background:var(--blanco-calido);
+    color:var(--verde);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    font-weight:400;
+  }
+
+  .wrap{max-width:660px;margin:0 auto;padding:0 28px}
+
+  /* ---------- Sello / divisor con diamante ---------- */
+  .sello{display:flex;align-items:center;justify-content:center;gap:14px;margin:0 auto}
+  .sello .linea{height:1px;width:46px;background:var(--dorado-tenue)}
+  .sello .diamante{width:7px;height:7px;background:var(--dorado);transform:rotate(45deg)}
+
+  /* ============================================================
+     HERO
+     ============================================================ */
+  .hero{
+    background:var(--verde);
+    color:var(--blanco-calido);
+    padding:64px 0 76px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 50% -10%, rgba(178,138,61,.16), transparent 55%);
+    pointer-events:none;
+  }
+  .marca{
+    font-family:var(--sans);
+    font-size:12px;letter-spacing:.42em;text-transform:uppercase;
+    font-weight:500;color:var(--dorado);
+    margin-bottom:34px;position:relative;
+  }
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(2.5rem,7vw,3.9rem);
+    line-height:1.06;
+    letter-spacing:-.01em;
+    margin-bottom:22px;
+    position:relative;
+  }
+  .hero h1 em{font-style:italic;color:var(--beige)}
+  .hero .bajada{
+    font-size:1.02rem;
+    color:rgba(255,253,245,.74);
+    max-width:430px;margin:0 auto 8px;
+    position:relative;
+  }
+  .hero .sello{margin-top:34px;position:relative}
+  .hero .sello .linea{background:rgba(178,138,61,.45)}
+
+  /* ============================================================
+     INTRO
+     ============================================================ */
+  .intro{padding:60px 0 12px;text-align:center}
+  .intro p{
+    font-family:var(--serif);
+    font-size:1.5rem;
+    line-height:1.4;
+    color:var(--verde);
+    max-width:500px;margin:0 auto;
+    font-weight:400;
+  }
+  .intro .categorias{
+    font-family:var(--sans);
+    font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--dorado);font-weight:500;
+    margin-top:26px;
+  }
+
+  /* ============================================================
+     FORMULARIO
+     ============================================================ */
+  .form-zona{padding:48px 0 80px}
+
+  .tarjeta{
+    background:var(--blanco-calido);
+    border:1px solid var(--dorado-tenue);
+    border-radius:var(--radio);
+    box-shadow:var(--sombra);
+    padding:44px 38px;
+  }
+
+  .paso-label{
+    font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--dorado);font-weight:600;margin-bottom:10px;
+    display:block;
+  }
+  .pregunta{
+    font-family:var(--serif);
+    font-size:1.72rem;line-height:1.25;font-weight:500;
+    margin-bottom:6px;color:var(--verde);
+  }
+  .pregunta-sub{
+    font-size:.92rem;color:rgba(14,75,54,.62);margin-bottom:26px;
+  }
+
+  /* ---------- Selección de camino (pregunta raíz) ---------- */
+  .caminos{display:grid;gap:14px}
+  .camino{
+    border:1px solid var(--dorado-tenue);
+    border-radius:var(--radio);
+    padding:22px 24px;
+    cursor:pointer;
+    background:var(--blanco-calido);
+    transition:border-color .2s, background .2s, transform .15s;
+    text-align:left;
+    display:flex;align-items:center;gap:18px;
+    width:100%;
+  }
+  .camino:hover{border-color:var(--dorado);background:var(--verde-tenue);transform:translateY(-1px)}
+  .camino .num{
+    font-family:var(--serif);font-size:1.5rem;color:var(--dorado);
+    font-style:italic;min-width:26px;
+  }
+  .camino .txt{flex:1}
+  .camino .txt strong{
+    display:block;font-family:var(--serif);font-size:1.3rem;
+    font-weight:500;color:var(--verde);line-height:1.2;
+  }
+  .camino .txt span{font-size:.88rem;color:rgba(14,75,54,.6)}
+  .camino .flecha{color:var(--dorado);font-size:1.1rem;opacity:.6}
+
+  /* ---------- Campos ---------- */
+  .campo{margin-bottom:24px}
+  .campo > label{
+    display:block;font-size:.82rem;font-weight:600;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--verde);margin-bottom:9px;
+  }
+  .campo .ayuda{font-size:.82rem;color:rgba(14,75,54,.55);font-weight:400;text-transform:none;letter-spacing:0;margin-top:2px}
+
+  input[type=text], input[type=tel], input[type=email], select, textarea{
+    width:100%;
+    font-family:var(--sans);font-size:.96rem;
+    padding:13px 15px;
+    border:1px solid var(--dorado-tenue);
+    border-radius:var(--radio);
+    background:var(--blanco-calido);
+    color:var(--verde);
+    transition:border-color .2s, box-shadow .2s;
+  }
+  input:focus, select:focus, textarea:focus{
+    outline:none;border-color:var(--dorado);
+    box-shadow:0 0 0 3px rgba(178,138,61,.14);
+  }
+  textarea{resize:vertical;min-height:84px}
+  select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23B28A3D' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");background-repeat:no-repeat;background-position:right 15px center;padding-right:42px}
+
+  /* ---------- Chips de selección múltiple ---------- */
+  .chips{display:flex;flex-wrap:wrap;gap:9px}
+  .chip{position:relative}
+  .chip input{position:absolute;opacity:0;width:0;height:0}
+  .chip label{
+    display:inline-block;
+    padding:9px 16px;
+    border:1px solid var(--dorado-tenue);
+    border-radius:100px;
+    font-size:.88rem;cursor:pointer;color:var(--verde);
+    transition:all .18s;user-select:none;
+  }
+  .chip label:hover{border-color:var(--dorado)}
+  .chip input:checked + label{
+    background:var(--verde);color:var(--blanco-calido);border-color:var(--verde);
+  }
+
+  /* ---------- Radios elegantes ---------- */
+  .opciones{display:grid;gap:10px}
+  .opcion{position:relative}
+  .opcion input{position:absolute;opacity:0;width:0;height:0}
+  .opcion label{
+    display:flex;align-items:center;gap:13px;
+    padding:14px 18px;border:1px solid var(--dorado-tenue);
+    border-radius:var(--radio);cursor:pointer;font-size:.94rem;
+    color:var(--verde);transition:all .18s;
+  }
+  .opcion label::before{
+    content:"";width:16px;height:16px;border-radius:50%;
+    border:1.5px solid var(--dorado-tenue);flex-shrink:0;transition:all .18s;
+  }
+  .opcion label:hover{border-color:var(--dorado)}
+  .opcion input:checked + label{border-color:var(--verde);background:var(--verde-tenue)}
+  .opcion input:checked + label::before{border-color:var(--verde);border-width:5px}
+
+  /* ---------- Subtítulo de sección dentro del form ---------- */
+  .seccion-sep{
+    display:flex;align-items:center;gap:14px;
+    margin:38px 0 26px;
+  }
+  .seccion-sep .linea{flex:1;height:1px;background:var(--dorado-tenue)}
+  .seccion-sep .etq{
+    font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--dorado);font-weight:600;white-space:nowrap;
+  }
+
+  /* ---------- Botones de navegación ---------- */
+  .nav-btns{display:flex;gap:14px;margin-top:34px;align-items:center}
+  .btn{
+    font-family:var(--sans);font-size:.92rem;font-weight:600;
+    letter-spacing:.04em;
+    padding:15px 30px;border-radius:var(--radio);
+    cursor:pointer;border:1px solid transparent;
+    transition:all .2s;
+  }
+  .btn-primario{
+    background:var(--verde);color:var(--blanco-calido);flex:1;
+  }
+  .btn-primario:hover{background:#0a3a2a}
+  .btn-secundario{
+    background:transparent;color:var(--verde);
+    border-color:var(--dorado-tenue);
+  }
+  .btn-secundario:hover{border-color:var(--dorado)}
+
+  /* ---------- Barra de progreso ---------- */
+  .progreso{height:2px;background:var(--dorado-tenue);margin-bottom:38px;position:relative;overflow:hidden}
+  .progreso .barra{position:absolute;left:0;top:0;height:100%;background:var(--dorado);transition:width .4s ease}
+
+  /* ---------- Pasos ---------- */
+  .paso{display:none;animation:fade .4s ease}
+  .paso.activo{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ============================================================
+     PANTALLA FINAL / WHATSAPP
+     ============================================================ */
+  .final{display:none;text-align:center;padding:8px 0}
+  .final.activo{display:block;animation:fade .5s ease}
+  .final .marca-sello{
+    width:54px;height:54px;border:1px solid var(--dorado);border-radius:50%;
+    display:flex;align-items:center;justify-content:center;margin:0 auto 26px;
+  }
+  .final .marca-sello span{width:11px;height:11px;background:var(--dorado);transform:rotate(45deg)}
+  .final h2{
+    font-family:var(--serif);font-size:2rem;font-weight:500;
+    margin-bottom:14px;line-height:1.2;
+  }
+  .final p{color:rgba(14,75,54,.7);max-width:400px;margin:0 auto 30px;font-size:1rem}
+  .btn-whatsapp{
+    display:inline-flex;align-items:center;gap:11px;
+    background:var(--verde);color:var(--blanco-calido);
+    font-family:var(--sans);font-weight:600;font-size:1rem;
+    padding:16px 32px;border-radius:var(--radio);
+    text-decoration:none;transition:background .2s;border:none;cursor:pointer;
+  }
+  .btn-whatsapp:hover{background:#0a3a2a}
+  .btn-whatsapp svg{width:20px;height:20px;fill:currentColor}
+  .final .nota{font-size:.84rem;color:rgba(14,75,54,.5);margin-top:22px}
+
+  /* ============================================================
+     FOOTER
+     ============================================================ */
+  footer{
+    background:var(--verde);color:rgba(255,253,245,.6);
+    text-align:center;padding:40px 0;font-size:.82rem;
+    letter-spacing:.02em;
+  }
+  footer .marca-pie{
+    font-family:var(--serif);font-size:1.3rem;color:var(--beige);
+    font-weight:500;margin-bottom:8px;letter-spacing:.04em;
+  }
+  footer .ciudades{
+    font-size:.74rem;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--dorado);margin-top:14px;
+  }
+
+  /* ---------- Validación ---------- */
+  .error-msg{color:var(--vinotinto);font-size:.84rem;margin-top:14px;display:none}
+  .error-msg.visible{display:block}
+
+  @media(max-width:560px){
+    .tarjeta{padding:32px 22px}
+    .wrap{padding:0 20px}
+    .nav-btns{flex-direction:column-reverse}
+    .btn{width:100%}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================ HERO ============================ -->
+<header class="hero">
+  <div class="wrap">
+    <div class="marca">Casa Vestigio</div>
+    <h1>No todo lo que se guarda<br>vale. Saber <em>cuáles sí</em>,<br>ese es el oficio.</h1>
+    <p class="bajada">Ventas privadas curadas en residencias. Valoramos, investigamos y presentamos sus piezas ante compradores reales. Nada se deja al azar.</p>
+    <div class="sello"><span class="linea"></span><span class="diamante"></span><span class="linea"></span></div>
+  </div>
+</header>
+
+<!-- ============================ INTRO ============================ -->
+<section class="intro">
+  <div class="wrap">
+    <p>Lo que vale merece algo más que publicarlo y esperar. Cuéntenos qué le trae hasta aquí y demos el primer paso.</p>
+    <div class="categorias">Arte · Relojería · Cristal · Mobiliario · Objetos con historia</div>
+  </div>
+</section>
+
+<!-- ============================ FORMULARIO ============================ -->
+<section class="form-zona">
+  <div class="wrap">
+    <div class="tarjeta">
+
+      <div class="progreso"><div class="barra" id="barra" style="width:0%"></div></div>
+
+      <!-- ====== PASO 0: PREGUNTA RAÍZ ====== -->
+      <div class="paso activo" data-paso="0">
+        <span class="paso-label">Para comenzar</span>
+        <h2 class="pregunta">¿Qué le trae a Casa Vestigio?</h2>
+        <p class="pregunta-sub">Su respuesta nos permite hacerle solo las preguntas que importan en su caso.</p>
+        <div class="caminos">
+          <button type="button" class="camino" data-camino="vendedor">
+            <span class="num">I</span>
+            <span class="txt"><strong>Quiero vender</strong><span>Tengo piezas, una colección o una residencia que deseo evaluar y vender.</span></span>
+            <span class="flecha">→</span>
+          </button>
+          <button type="button" class="camino" data-camino="comprador">
+            <span class="num">II</span>
+            <span class="txt"><strong>Quiero comprar</strong><span>Busco acceso a piezas seleccionadas a través del Círculo Vestigio.</span></span>
+            <span class="flecha">→</span>
+          </button>
+          <button type="button" class="camino" data-camino="ambos">
+            <span class="num">III</span>
+            <span class="txt"><strong>Ambas cosas</strong><span>Deseo vender algunas piezas y, a la vez, adquirir otras.</span></span>
+            <span class="flecha">→</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ====== PASOS DINÁMICOS ====== -->
+      <form id="form-vestigio" novalidate>
+        <div id="pasos-dinamicos"></div>
+
+        <div class="error-msg" id="error">Por favor completa los campos requeridos para continuar.</div>
+
+        <div class="nav-btns" id="nav" style="display:none">
+          <button type="button" class="btn btn-secundario" id="btn-atras">← Atrás</button>
+          <button type="button" class="btn btn-primario" id="btn-siguiente">Continuar</button>
+        </div>
+      </form>
+
+      <!-- ====== PANTALLA FINAL ====== -->
+      <div class="final" id="final">
+        <div class="marca-sello"><span></span></div>
+        <h2 id="final-titulo">Gracias. Demos el siguiente paso.</h2>
+        <p id="final-texto">Hemos recibido su información. Para continuar la conversación de forma personal y segura, escríbanos por WhatsApp con un solo toque.</p>
+        <button type="button" class="btn-whatsapp" id="btn-wa">
+          <svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.2-1.7-.8-2-.9-.3-.1-.5-.2-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.2-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.2.2 2.1 3.2 5 4.5.7.3 1.2.5 1.7.6.7.2 1.3.2 1.8.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.2-.3-.2-.6-.4M12 2a10 10 0 0 0-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1 0 12 2"/></svg>
+        Conversemos por WhatsApp</button>
+        <p class="nota">Un miembro del equipo de Casa Vestigio le atenderá personalmente.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer>
+  <div class="wrap">
+    <div class="marca-pie">Casa Vestigio</div>
+    <div>Ventas privadas curadas · Valoramos, investigamos y presentamos</div>
+    <div class="ciudades">Caracas · Panamá · Miami</div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   CONFIGURACIÓN
+   ============================================================ */
+// Cambia este número por el WhatsApp real de Casa Vestigio (formato internacional sin + ni espacios)
+const WHATSAPP_NUMERO = "584120000000";
+
+/* ============================================================
+   DEFINICIÓN DE PREGUNTAS POR CAMINO
+   Cada paso es un objeto con su HTML. Las preguntas están
+   tabuladas y alineadas con los formularios del manual (secc. 12 y 13).
+   ============================================================ */
+
+const P = {}; // contenedor de bloques reutilizables
+
+// ---- Bloque: datos de contacto (común a todos) ----
+P.contacto = `
+  <span class="paso-label">Sus datos</span>
+  <h2 class="pregunta">¿Cómo le contactamos?</h2>
+  <p class="pregunta-sub">Usaremos estos datos para continuar la conversación por WhatsApp.</p>
+  <div class="campo">
+    <label for="nombre">Nombre y apellido <span class="ayuda">(requerido)</span></label>
+    <input type="text" id="nombre" name="nombre" required placeholder="Su nombre completo">
+  </div>
+  <div class="campo">
+    <label for="whatsapp">WhatsApp <span class="ayuda">(requerido — con código de país)</span></label>
+    <input type="tel" id="whatsapp" name="whatsapp" required placeholder="Ej: +58 412 000 0000">
+  </div>
+  <div class="campo">
+    <label for="ciudad">Ciudad <span class="ayuda">(requerido)</span></label>
+    <select id="ciudad" name="ciudad" required>
+      <option value="">Seleccione su ciudad</option>
+      <option>Caracas</option>
+      <option>Panamá</option>
+      <option>Miami</option>
+      <option>Otra</option>
+    </select>
+  </div>
+  <div class="campo">
+    <label for="correo">Correo electrónico <span class="ayuda">(opcional)</span></label>
+    <input type="email" id="correo" name="correo" placeholder="tucorreo@ejemplo.com">
+  </div>
+`;
+
+/* ---------------- CAMINO VENDEDOR ---------------- */
+const PASOS_VENDEDOR = [
+  // Paso V1 — qué piezas
+  `<span class="paso-label">Sobre sus piezas</span>
+   <h2 class="pregunta">¿Qué tipo de piezas desea evaluar o vender?</h2>
+   <p class="pregunta-sub">Seleccione todas las que correspondan.</p>
+   <div class="chips">
+     ${['Arte / cuadros','Relojería','Cristal / Murano','Mobiliario','Porcelana / vajillas','Objetos de colección','Plata / oro','Lámparas / esculturas','Libros','Otros'].map((v,i)=>`
+       <div class="chip"><input type="checkbox" id="vp${i}" name="vend_piezas" value="${v}"><label for="vp${i}">${v}</label></div>`).join('')}
+   </div>`,
+
+  // Paso V2 — motivo + volumen
+  `<span class="paso-label">Su situación</span>
+   <h2 class="pregunta">¿Qué motiva esta venta?</h2>
+   <p class="pregunta-sub">Nos ayuda a entender el contexto y proponerle el mejor formato.</p>
+   <div class="campo">
+     <label>Motivo principal</label>
+     <div class="opciones">
+       ${['Mudanza','Herencia','Reorganización del hogar','Renovación','Venta de la casa','Otro'].map((v,i)=>`
+         <div class="opcion"><input type="radio" id="vm${i}" name="vend_motivo" value="${v}"><label for="vm${i}">${v}</label></div>`).join('')}
+     </div>
+   </div>
+   <div class="campo">
+     <label>Volumen aproximado de piezas</label>
+     <div class="opciones">
+       ${['Una sola pieza','Pocas piezas','Una habitación','Varios espacios','Casa completa'].map((v,i)=>`
+         <div class="opcion"><input type="radio" id="vv${i}" name="vend_volumen" value="${v}"><label for="vv${i}">${v}</label></div>`).join('')}
+     </div>
+   </div>`,
+
+  // Paso V3 — conocimiento + expectativa
+  `<span class="paso-label">Sus expectativas</span>
+   <h2 class="pregunta">¿Cómo describiría su situación?</h2>
+   <p class="pregunta-sub">No hay respuesta incorrecta. Esto nos orienta sobre cómo acompañarle.</p>
+   <div class="campo">
+     <label>Respecto al valor de sus piezas…</label>
+     <div class="opciones">
+       <div class="opcion"><input type="radio" id="vc0" name="vend_conoce" value="No sé qué tengo"><label for="vc0">No estoy seguro de qué tengo ni de qué puede valer</label></div>
+       <div class="opcion"><input type="radio" id="vc1" name="vend_conoce" value="Sé qué tengo"><label for="vc1">Sé lo que tengo, busco el canal y los compradores correctos</label></div>
+     </div>
+   </div>
+   <div class="campo">
+     <label>¿Qué espera principalmente de Casa Vestigio?</label>
+     <div class="opciones">
+       ${['Evaluación / orientación','Organización de la venta','Venta por comisión','Compra directa','Una mezcla / no estoy seguro'].map((v,i)=>`
+         <div class="opcion"><input type="radio" id="ve${i}" name="vend_expectativa" value="${v}"><label for="ve${i}">${v}</label></div>`).join('')}
+     </div>
+   </div>
+   <div class="campo">
+     <label for="vend_desc">Cuéntenos brevemente sobre sus piezas <span class="ayuda">(opcional)</span></label>
+     <textarea id="vend_desc" name="vend_desc" placeholder="Procedencia, antigüedad, estado, o cualquier detalle que desee mencionar."></textarea>
+   </div>
+   <div class="campo">
+     <label>¿Tendría disponibilidad para una visita privada si su caso tiene potencial?</label>
+     <div class="opciones">
+       ${['Sí','Depende','Por ahora prefiero solo conversar'].map((v,i)=>`
+         <div class="opcion"><input type="radio" id="vd${i}" name="vend_visita" value="${v}"><label for="vd${i}">${v}</label></div>`).join('')}
+     </div>
+   </div>
+   <p class="pregunta-sub" style="margin-top:18px">Una nota con honestidad: no todas las piezas tienen el mismo valor, y el mercado decide. Nuestro trabajo es valorar con criterio y buscar al comprador correcto — no prometer cifras de antemano.</p>`
+];
+
+/* ---------------- CAMINO COMPRADOR (Círculo Vestigio) ---------------- */
+const PASOS_COMPRADOR = [
+  // Paso C1 — intereses
+  `<span class="paso-label">Círculo Vestigio</span>
+   <h2 class="pregunta">¿Qué tipo de piezas le interesan?</h2>
+   <p class="pregunta-sub">Recibirá oportunidades filtradas según su perfil, no una avalancha de artículos.</p>
+   <div class="chips">
+     ${['Arte','Relojería','Cristal','Mobiliario','Antigüedades','Decoración','Porcelana','Libros','Objetos de colección','Oportunidades para reventa'].map((v,i)=>`
+       <div class="chip"><input type="checkbox" id="cp${i}" name="comp_intereses" value="${v}"><label for="cp${i}">${v}</label></div>`).join('')}
+   </div>`,
+
+  // Paso C2 — propósito + rango
+  `<span class="paso-label">Su perfil de compra</span>
+   <h2 class="pregunta">¿Con qué propósito compra?</h2>
+   <p class="pregunta-sub">Esto define en qué segmento del Círculo le ubicamos.</p>
+   <div class="campo">
+     <label>Compro principalmente para…</label>
+     <div class="opciones">
+       ${['Uso personal','Colección','Decoración','Reventa','Diseño de interiores','Inversión'].map((v,i)=>`
+         <div class="opcion"><input type="radio" id="cpr${i}" name="comp_proposito" value="${v}"><label for="cpr${i}">${v}</label></div>`).join('')}
+     </div>
+   </div>
+   <div class="campo">
+     <label>Rango aproximado de compra por pieza</label>
+     <div class="opciones">
+       ${['Menos de $100','$100 – $500','$500 – $1.500','$1.500 – $5.000','Más de $5.000'].map((v,i)=>`
+         <div class="opcion"><input type="radio" id="cr${i}" name="comp_rango" value="${v}"><label for="cr${i}">${v}</label></div>`).join('')}
+     </div>
+   </div>`,
+
+  // Paso C3 — comportamiento
+  `<span class="paso-label">Cómo prefiere recibir oportunidades</span>
+   <h2 class="pregunta">Un par de detalles más.</h2>
+   <p class="pregunta-sub">Para enviarle solo lo que realmente encaja con usted.</p>
+   <div class="campo">
+     <label>¿Desea recibir oportunidades por WhatsApp?</label>
+     <div class="opciones">
+       ${['Sí, con gusto','Prefiero por correo','Solo cuando aparezca algo muy específico'].map((v,i)=>`
+         <div class="opcion"><input type="radio" id="cw${i}" name="comp_wa" value="${v}"><label for="cw${i}">${v}</label></div>`).join('')}
+     </div>
+   </div>
+   <div class="campo">
+     <label>Si una pieza le interesa, ¿suele concretar rápido?</label>
+     <div class="opciones">
+       ${['Sí, decido rápido','Depende de la pieza','Necesito pensarlo con calma'].map((v,i)=>`
+         <div class="opcion"><input type="radio" id="cc${i}" name="comp_decision" value="${v}"><label for="cc${i}">${v}</label></div>`).join('')}
+     </div>
+   </div>
+   <div class="campo">
+     <label for="comp_busca">¿Busca algo específico en este momento? <span class="ayuda">(opcional)</span></label>
+     <textarea id="comp_busca" name="comp_busca" placeholder="Ej: un reloj de cierta marca, mobiliario para un proyecto, una pieza de arte en particular…"></textarea>
+   </div>`
+];
+
+/* ============================================================
+   CONSTRUCCIÓN DEL FLUJO SEGÚN EL CAMINO
+   ============================================================ */
+let estado = {
+  camino:null,      // vendedor | comprador | ambos
+  pasos:[],         // array de HTML de cada paso
+  indice:0,         // paso actual
+  datos:{}          // respuestas acumuladas
+};
+
+const pasosDinamicos = document.getElementById('pasos-dinamicos');
+const nav = document.getElementById('nav');
+const barra = document.getElementById('barra');
+const errorMsg = document.getElementById('error');
+const btnSiguiente = document.getElementById('btn-siguiente');
+const btnAtras = document.getElementById('btn-atras');
+
+// Selección del camino raíz
+document.querySelectorAll('.camino').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    estado.camino = btn.dataset.camino;
+    construirPasos();
+    document.querySelector('[data-paso="0"]').style.display='none';
+    nav.style.display='flex';
+    estado.indice=0;
+    renderPaso();
+  });
+});
+
+function construirPasos(){
+  if(estado.camino==='vendedor') estado.pasos=[...PASOS_VENDEDOR, P.contacto];
+  else if(estado.camino==='comprador') estado.pasos=[...PASOS_COMPRADOR, P.contacto];
+  else estado.pasos=[
+    `<div class="seccion-sep"><span class="linea"></span><span class="etq">Primero — lo que desea vender</span><span class="linea"></span></div>`+PASOS_VENDEDOR[0],
+    PASOS_VENDEDOR[1],
+    PASOS_VENDEDOR[2],
+    `<div class="seccion-sep"><span class="linea"></span><span class="etq">Ahora — lo que desea comprar</span><span class="linea"></span></div>`+PASOS_COMPRADOR[0],
+    PASOS_COMPRADOR[1],
+    PASOS_COMPRADOR[2],
+    P.contacto
+  ];
+}
+
+function renderPaso(){
+  pasosDinamicos.innerHTML = `<div class="paso activo">${estado.pasos[estado.indice]}</div>`;
+  restaurar();
+  const total = estado.pasos.length;
+  barra.style.width = ((estado.indice)/(total))*100 + '%';
+  btnAtras.style.visibility = estado.indice===0 ? 'hidden':'visible';
+  btnSiguiente.textContent = estado.indice===total-1 ? 'Finalizar y abrir WhatsApp' : 'Continuar';
+  errorMsg.classList.remove('visible');
+  pasosDinamicos.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+// Guardar respuestas del paso actual
+function guardarPaso(){
+  const cont = pasosDinamicos;
+  // texto, tel, email, select, textarea
+  cont.querySelectorAll('input[type=text],input[type=tel],input[type=email],select,textarea').forEach(el=>{
+    if(el.name) estado.datos[el.name]=el.value.trim();
+  });
+  // radios
+  cont.querySelectorAll('input[type=radio]:checked').forEach(el=>{
+    estado.datos[el.name]=el.value;
+  });
+  // checkboxes (agrupar)
+  const grupos={};
+  cont.querySelectorAll('input[type=checkbox]:checked').forEach(el=>{
+    (grupos[el.name]=grupos[el.name]||[]).push(el.value);
+  });
+  Object.keys(grupos).forEach(k=>estado.datos[k]=grupos[k]);
+}
+
+// Restaurar respuestas si el usuario vuelve atrás
+function restaurar(){
+  const cont = pasosDinamicos;
+  cont.querySelectorAll('input[type=text],input[type=tel],input[type=email],select,textarea').forEach(el=>{
+    if(el.name && estado.datos[el.name]) el.value=estado.datos[el.name];
+  });
+  cont.querySelectorAll('input[type=radio]').forEach(el=>{
+    if(estado.datos[el.name]===el.value) el.checked=true;
+  });
+  cont.querySelectorAll('input[type=checkbox]').forEach(el=>{
+    const arr=estado.datos[el.name];
+    if(Array.isArray(arr)&&arr.includes(el.value)) el.checked=true;
+  });
+}
+
+// Validación mínima: solo el paso de contacto exige campos
+function validarPaso(){
+  const cont = pasosDinamicos;
+  const requeridos = cont.querySelectorAll('[required]');
+  for(const el of requeridos){
+    if(!el.value.trim()){ return false; }
+  }
+  return true;
+}
+
+btnSiguiente.addEventListener('click',()=>{
+  guardarPaso();
+  if(!validarPaso()){ errorMsg.classList.add('visible'); return; }
+  if(estado.indice < estado.pasos.length-1){
+    estado.indice++;
+    renderPaso();
+  } else {
+    finalizar();
+  }
+});
+
+btnAtras.addEventListener('click',()=>{
+  guardarPaso();
+  if(estado.indice>0){ estado.indice--; renderPaso(); }
+});
+
+/* ============================================================
+   PERFILADO AUTOMÁTICO + ENRUTAMIENTO A WHATSAPP
+   ============================================================ */
+function calcularPerfil(){
+  const d = estado.datos;
+  let perfil = [];
+  let prioridad = "Por revisar";
+
+  // --- Perfil de vendedor ---
+  if(estado.camino==='vendedor' || estado.camino==='ambos'){
+    let tipoV = d.vend_conoce==='Sé qué tengo' ? 'Vendedor informado' : 'Vendedor a orientar';
+    perfil.push(tipoV);
+    // señal de prioridad por volumen y tipo de pieza
+    const altaGama = (d.vend_piezas||[]).some(p=>['Arte / cuadros','Relojería','Plata / oro','Objetos de colección','Cristal / Murano'].includes(p));
+    const buenVolumen = ['Una habitación','Varios espacios','Casa completa'].includes(d.vend_volumen);
+    if(altaGama && buenVolumen) prioridad="Alta — visita prioritaria";
+    else if(altaGama || buenVolumen) prioridad="Media — revisar imágenes";
+    else prioridad="A conversar — posible bajo volumen";
+  }
+
+  // --- Perfil de comprador (segmentación Círculo Vestigio A/B/C/D) ---
+  if(estado.camino==='comprador' || estado.camino==='ambos'){
+    let lista="D — Particulares";
+    const rango=d.comp_rango||"";
+    const prop=d.comp_proposito||"";
+    if(prop==='Reventa') lista="C — Revendedores";
+    else if(['Más de $5.000','$1.500 – $5.000'].includes(rango) || (d.comp_intereses||[]).some(i=>['Relojería','Arte'].includes(i))) lista="A — Premium";
+    else if(['Colección','Decoración','Diseño de interiores'].includes(prop) || ['$500 – $1.500'].includes(rango)) lista="B — Coleccionistas / Decoración";
+    perfil.push('Comprador '+lista);
+  }
+
+  return {perfil:perfil.join(' + '), prioridad};
+}
+
+function finalizar(){
+  guardarPaso();
+  const d = estado.datos;
+  const {perfil, prioridad} = calcularPerfil();
+  d._perfil = perfil;
+  d._prioridad = prioridad;
+
+  // ---- Construir mensaje pre-rellenado de WhatsApp ----
+  const L=[];
+  L.push("Hola Casa Vestigio, acabo de completar el formulario.");
+  L.push("");
+  L.push("• Nombre: "+(d.nombre||"-"));
+  L.push("• Ciudad: "+(d.ciudad||"-"));
+  L.push("• Interés: "+ (estado.camino==='vendedor'?'Vender':estado.camino==='comprador'?'Comprar':'Vender y comprar'));
+
+  if(estado.camino==='vendedor'||estado.camino==='ambos'){
+    L.push("");
+    L.push("— Vender —");
+    if(d.vend_piezas) L.push("• Piezas: "+d.vend_piezas.join(', '));
+    if(d.vend_motivo) L.push("• Motivo: "+d.vend_motivo);
+    if(d.vend_volumen) L.push("• Volumen: "+d.vend_volumen);
+    if(d.vend_expectativa) L.push("• Espera: "+d.vend_expectativa);
+    if(d.vend_visita) L.push("• Visita: "+d.vend_visita);
+  }
+  if(estado.camino==='comprador'||estado.camino==='ambos'){
+    L.push("");
+    L.push("— Comprar —");
+    if(d.comp_intereses) L.push("• Intereses: "+d.comp_intereses.join(', '));
+    if(d.comp_proposito) L.push("• Propósito: "+d.comp_proposito);
+    if(d.comp_rango) L.push("• Rango: "+d.comp_rango);
+  }
+
+  const mensaje = encodeURIComponent(L.join("\n"));
+  const urlWA = `https://wa.me/${WHATSAPP_NUMERO}?text=${mensaje}`;
+
+  // ---- Personalizar pantalla final según perfil ----
+  let titulo="Gracias. Demos el siguiente paso.";
+  let texto="Hemos recibido su información. Para continuar de forma personal y segura, escríbanos por WhatsApp con un solo toque.";
+  if(estado.camino==='comprador'){
+    titulo="Bienvenido al Círculo Vestigio.";
+    texto="Hemos registrado sus intereses. Confirme su acceso por WhatsApp y comenzará a recibir oportunidades seleccionadas según su perfil.";
+  } else if(estado.camino==='vendedor'){
+    titulo="Gracias. Revisemos sus piezas.";
+    texto="Hemos recibido su información. El siguiente paso es conversar por WhatsApp y, si lo desea, compartir algunas fotos para una primera evaluación.";
+  }
+  document.getElementById('final-titulo').textContent=titulo;
+  document.getElementById('final-texto').textContent=texto;
+  document.getElementById('btn-wa').onclick=()=>{ window.open(urlWA,'_blank'); };
+
+  // Mostrar pantalla final
+  pasosDinamicos.innerHTML='';
+  nav.style.display='none';
+  barra.style.width='100%';
+  document.getElementById('final').classList.add('activo');
+
+  // ---- Punto de integración: aquí enviarías los datos a tu CRM / hoja / webhook ----
+  // Ejemplo (descomenta y ajusta la URL cuando tengas tu endpoint):
+  // fetch('https://TU_ENDPOINT', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(estado.datos)});
+  console.log("Datos del lead:", estado.datos);
+}
+</script>
+</body>
+</html>
