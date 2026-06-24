@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>document.documentElement.classList.add('js')</script>
 <title>Casa Vestigio — Ventas privadas curadas</title>
 <meta name="description" content="Valoramos, investigamos y presentamos sus piezas ante compradores reales. Nada se deja al azar. Ventas privadas curadas en residencias.">
 
@@ -31,38 +32,56 @@
      ============================================================ */
   :root{
     --verde:#0E4B36;
+    --verde-osc:#0a3a2a;
     --beige:#EFE4CC;
     --blanco-calido:#FFFDF5;
     --dorado:#B28A3D;
+    --dorado-claro:#D8BD7E;
     --vinotinto:#5B0F1A;
     --azul:#0B2D63;
-    --verde-tenue:rgba(14,75,54,.08);
-    --dorado-tenue:rgba(178,138,61,.30);
-    --sombra:0 1px 2px rgba(14,75,54,.04), 0 12px 40px rgba(14,75,54,.07);
-    --radio:2px;
+    --verde-tenue:rgba(14,75,54,.06);
+    --dorado-tenue:rgba(178,138,61,.28);
+    --dorado-linea:rgba(178,138,61,.45);
+    /* Foil: brillo metálico dorado sutil para sellos y monograma */
+    --foil:linear-gradient(105deg,#8f6c2c 0%,#B28A3D 34%,#E6CF90 50%,#B28A3D 66%,#82632a 100%);
+    --sombra:0 1px 2px rgba(14,75,54,.04), 0 22px 50px -20px rgba(14,75,54,.16);
+    --radio:3px;
     --serif:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
     --sans:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --gutter:clamp(22px, 6vw, 34px);
   }
 
-  *{box-sizing:border-box;margin:0;padding:0}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 
-  html{scroll-behavior:smooth}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 
   body{
     font-family:var(--sans);
     background:var(--blanco-calido);
     color:var(--verde);
-    line-height:1.6;
+    line-height:1.65;
+    font-size:16px;
     -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
     font-weight:400;
+    position:relative;
+    min-height:100dvh;
+    overflow-x:hidden;
   }
 
-  .wrap{max-width:660px;margin:0 auto;padding:0 28px}
+  /* Grano de papel: textura cálida casi imperceptible sobre todo el lienzo */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;opacity:.045;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap{max-width:660px;margin:0 auto;padding:0 var(--gutter)}
 
   /* ---------- Sello / divisor con diamante ---------- */
-  .sello{display:flex;align-items:center;justify-content:center;gap:14px;margin:0 auto}
-  .sello .linea{height:1px;width:46px;background:var(--dorado-tenue)}
-  .sello .diamante{width:7px;height:7px;background:var(--dorado);transform:rotate(45deg)}
+  .sello{display:flex;align-items:center;justify-content:center;gap:16px;margin:0 auto}
+  .sello .linea{height:1px;width:54px;background:linear-gradient(90deg,transparent,var(--dorado-linea))}
+  .sello .linea:last-child{background:linear-gradient(90deg,var(--dorado-linea),transparent)}
+  .sello .diamante{width:8px;height:8px;background:var(--foil);transform:rotate(45deg);box-shadow:0 0 0 1px rgba(178,138,61,.25)}
 
   /* ============================================================
      HERO
@@ -70,85 +89,106 @@
   .hero{
     background:var(--verde);
     color:var(--blanco-calido);
-    padding:64px 0 76px;
+    padding:clamp(54px,14vw,86px) 0 clamp(60px,16vw,92px);
     text-align:center;
     position:relative;
     overflow:hidden;
   }
   .hero::after{
     content:"";position:absolute;inset:0;
-    background:radial-gradient(circle at 50% -10%, rgba(178,138,61,.16), transparent 55%);
+    background:radial-gradient(120% 75% at 50% -12%, rgba(178,138,61,.18), transparent 56%);
     pointer-events:none;
   }
+  .hero .wrap{position:relative;z-index:1}
   .marca{
     font-family:var(--sans);
-    font-size:12px;letter-spacing:.42em;text-transform:uppercase;
-    font-weight:500;color:var(--dorado);
-    margin-bottom:34px;position:relative;
+    font-size:12px;letter-spacing:.46em;text-transform:uppercase;
+    font-weight:600;padding-left:.46em;
+    background:var(--foil);-webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:var(--dorado);
+    margin-bottom:clamp(28px,7vw,40px);
   }
   .hero h1{
     font-family:var(--serif);
     font-weight:500;
-    font-size:clamp(2.5rem,7vw,3.9rem);
-    line-height:1.06;
-    letter-spacing:-.01em;
-    margin-bottom:22px;
-    position:relative;
+    font-size:clamp(2.3rem,8.4vw,3.85rem);
+    line-height:1.05;
+    letter-spacing:-.015em;
+    margin:0 auto 22px;max-width:15ch;
   }
   .hero h1 em{font-style:italic;color:var(--beige)}
   .hero .bajada{
-    font-size:1.02rem;
-    color:rgba(255,253,245,.74);
-    max-width:430px;margin:0 auto 8px;
-    position:relative;
+    font-size:clamp(1rem,2.7vw,1.08rem);
+    line-height:1.65;
+    color:rgba(255,253,245,.78);
+    max-width:44ch;margin:0 auto;
   }
-  .hero .sello{margin-top:34px;position:relative}
-  .hero .sello .linea{background:rgba(178,138,61,.45)}
+  .hero .sello{margin-top:clamp(30px,7vw,40px)}
+  .hero .sello .linea{background:linear-gradient(90deg,transparent,rgba(178,138,61,.5))}
+  .hero .sello .linea:last-child{background:linear-gradient(90deg,rgba(178,138,61,.5),transparent)}
 
   /* ============================================================
      INTRO
      ============================================================ */
-  .intro{padding:60px 0 12px;text-align:center}
-  .intro p{
+  .intro{padding:clamp(52px,12vw,72px) 0 8px;text-align:center}
+  .intro .promesa{
     font-family:var(--serif);
-    font-size:1.5rem;
-    line-height:1.4;
+    font-size:clamp(1.5rem,5.2vw,1.95rem);
+    line-height:1.3;font-style:italic;
     color:var(--verde);
-    max-width:500px;margin:0 auto;
-    font-weight:400;
+    max-width:18ch;margin:0 auto;
+    font-weight:500;
+  }
+  .intro .invitacion{
+    font-size:clamp(.98rem,2.6vw,1.04rem);
+    line-height:1.6;color:rgba(14,75,54,.66);
+    max-width:34ch;margin:18px auto 0;
   }
   .intro .categorias{
     font-family:var(--sans);
-    font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--dorado);font-weight:500;
-    margin-top:26px;
+    font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--dorado);font-weight:600;
+    margin-top:clamp(24px,5vw,30px);line-height:1.9;
+  }
+  /* Línea de discreción: sello de confianza sobrio */
+  .discrecion{
+    font-family:var(--sans);font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;
+    color:rgba(14,75,54,.45);font-weight:500;
+    margin-top:14px;
   }
 
   /* ============================================================
      FORMULARIO
      ============================================================ */
-  .form-zona{padding:48px 0 80px}
+  .form-zona{padding:clamp(40px,10vw,60px) 0 clamp(60px,14vw,88px)}
 
   .tarjeta{
     background:var(--blanco-calido);
     border:1px solid var(--dorado-tenue);
     border-radius:var(--radio);
     box-shadow:var(--sombra);
-    padding:44px 38px;
+    padding:clamp(28px,7vw,46px) clamp(22px,6vw,40px);
+    position:relative;
+  }
+  /* Filete dorado superior — acabado de papelería de lujo */
+  .tarjeta::before{
+    content:"";position:absolute;left:0;right:0;top:0;height:2px;
+    background:var(--foil);border-radius:var(--radio) var(--radio) 0 0;opacity:.9;
   }
 
   .paso-label{
-    font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
-    color:var(--dorado);font-weight:600;margin-bottom:10px;
+    font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;
+    color:var(--dorado);font-weight:600;margin-bottom:12px;
     display:block;
   }
   .pregunta{
     font-family:var(--serif);
-    font-size:1.72rem;line-height:1.25;font-weight:500;
-    margin-bottom:6px;color:var(--verde);
+    font-size:clamp(1.5rem,5.4vw,1.85rem);line-height:1.22;font-weight:500;
+    margin-bottom:8px;color:var(--verde);letter-spacing:-.01em;
   }
   .pregunta-sub{
-    font-size:.92rem;color:rgba(14,75,54,.62);margin-bottom:26px;
+    font-size:clamp(.9rem,2.4vw,.95rem);color:rgba(14,75,54,.62);
+    margin-bottom:26px;line-height:1.55;
   }
 
   /* ---------- Selección de camino (pregunta raíz) ---------- */
@@ -156,18 +196,22 @@
   .camino{
     border:1px solid var(--dorado-tenue);
     border-radius:var(--radio);
-    padding:22px 24px;
+    padding:20px 22px;
     cursor:pointer;
     background:var(--blanco-calido);
-    transition:border-color .2s, background .2s, transform .15s;
+    transition:border-color .2s, background .2s, box-shadow .2s, transform .12s;
     text-align:left;
-    display:flex;align-items:center;gap:18px;
-    width:100%;
+    display:flex;align-items:center;gap:16px;
+    width:100%;min-height:64px;touch-action:manipulation;
   }
-  .camino:hover{border-color:var(--dorado);background:var(--verde-tenue);transform:translateY(-1px)}
+  .camino:hover{border-color:var(--dorado);background:var(--verde-tenue)}
+  .camino:active{transform:scale(.99)}
+  .camino:focus-visible{outline:none;border-color:var(--dorado);box-shadow:0 0 0 3px rgba(178,138,61,.16)}
   .camino .num{
-    font-family:var(--serif);font-size:1.5rem;color:var(--dorado);
-    font-style:italic;min-width:26px;
+    font-family:var(--serif);font-size:1.6rem;
+    background:var(--foil);-webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:var(--dorado);
+    font-style:italic;min-width:26px;text-align:center;
   }
   .camino .txt{flex:1}
   .camino .txt strong{
@@ -187,19 +231,21 @@
 
   input[type=text], input[type=tel], input[type=email], select, textarea{
     width:100%;
-    font-family:var(--sans);font-size:.96rem;
-    padding:13px 15px;
+    font-family:var(--sans);font-size:16px;
+    padding:14px 16px;min-height:50px;
     border:1px solid var(--dorado-tenue);
     border-radius:var(--radio);
     background:var(--blanco-calido);
     color:var(--verde);
     transition:border-color .2s, box-shadow .2s;
+    touch-action:manipulation;
   }
   input:focus, select:focus, textarea:focus{
     outline:none;border-color:var(--dorado);
-    box-shadow:0 0 0 3px rgba(178,138,61,.14);
+    box-shadow:0 0 0 3px rgba(178,138,61,.16);
   }
-  textarea{resize:vertical;min-height:84px}
+  input::placeholder, textarea::placeholder{color:rgba(14,75,54,.4)}
+  textarea{resize:vertical;min-height:96px;line-height:1.55}
   select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23B28A3D' stroke-width='2'><polyline points='6 9 12 15 18 9'/></svg>");background-repeat:no-repeat;background-position:right 15px center;padding-right:42px}
 
   /* ---------- Chips de selección múltiple ---------- */
@@ -207,35 +253,39 @@
   .chip{position:relative}
   .chip input{position:absolute;opacity:0;width:0;height:0}
   .chip label{
-    display:inline-block;
-    padding:9px 16px;
+    display:inline-flex;align-items:center;min-height:44px;
+    padding:10px 18px;
     border:1px solid var(--dorado-tenue);
     border-radius:100px;
-    font-size:.88rem;cursor:pointer;color:var(--verde);
-    transition:all .18s;user-select:none;
+    font-size:.9rem;cursor:pointer;color:var(--verde);
+    transition:all .18s;user-select:none;touch-action:manipulation;
   }
   .chip label:hover{border-color:var(--dorado)}
+  .chip label:active{transform:scale(.97)}
   .chip input:checked + label{
     background:var(--verde);color:var(--blanco-calido);border-color:var(--verde);
   }
+  .chip input:focus-visible + label{border-color:var(--dorado);box-shadow:0 0 0 3px rgba(178,138,61,.16)}
 
   /* ---------- Radios elegantes ---------- */
   .opciones{display:grid;gap:10px}
   .opcion{position:relative}
   .opcion input{position:absolute;opacity:0;width:0;height:0}
   .opcion label{
-    display:flex;align-items:center;gap:13px;
+    display:flex;align-items:center;gap:13px;min-height:54px;
     padding:14px 18px;border:1px solid var(--dorado-tenue);
-    border-radius:var(--radio);cursor:pointer;font-size:.94rem;
-    color:var(--verde);transition:all .18s;
+    border-radius:var(--radio);cursor:pointer;font-size:.95rem;
+    color:var(--verde);transition:all .18s;touch-action:manipulation;
   }
   .opcion label::before{
-    content:"";width:16px;height:16px;border-radius:50%;
+    content:"";width:18px;height:18px;border-radius:50%;
     border:1.5px solid var(--dorado-tenue);flex-shrink:0;transition:all .18s;
   }
   .opcion label:hover{border-color:var(--dorado)}
+  .opcion label:active{transform:scale(.995)}
   .opcion input:checked + label{border-color:var(--verde);background:var(--verde-tenue)}
   .opcion input:checked + label::before{border-color:var(--verde);border-width:5px}
+  .opcion input:focus-visible + label{border-color:var(--dorado);box-shadow:0 0 0 3px rgba(178,138,61,.16)}
 
   /* ---------- Subtítulo de sección dentro del form ---------- */
   .seccion-sep{
@@ -253,14 +303,17 @@
   .btn{
     font-family:var(--sans);font-size:.92rem;font-weight:600;
     letter-spacing:.04em;
-    padding:15px 30px;border-radius:var(--radio);
+    padding:16px 30px;min-height:52px;border-radius:var(--radio);
     cursor:pointer;border:1px solid transparent;
-    transition:all .2s;
+    transition:background .2s,border-color .2s,box-shadow .2s,transform .12s;
+    touch-action:manipulation;
   }
+  .btn:active{transform:scale(.985)}
+  .btn:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(178,138,61,.22)}
   .btn-primario{
     background:var(--verde);color:var(--blanco-calido);flex:1;
   }
-  .btn-primario:hover{background:#0a3a2a}
+  .btn-primario:hover{background:var(--verde-osc)}
   .btn-secundario{
     background:transparent;color:var(--verde);
     border-color:var(--dorado-tenue);
@@ -268,8 +321,8 @@
   .btn-secundario:hover{border-color:var(--dorado)}
 
   /* ---------- Barra de progreso ---------- */
-  .progreso{height:2px;background:var(--dorado-tenue);margin-bottom:38px;position:relative;overflow:hidden}
-  .progreso .barra{position:absolute;left:0;top:0;height:100%;background:var(--dorado);transition:width .4s ease}
+  .progreso{height:2px;background:var(--dorado-tenue);margin-bottom:36px;position:relative;overflow:hidden;border-radius:2px}
+  .progreso .barra{position:absolute;left:0;top:0;height:100%;background:var(--foil);transition:width .45s cubic-bezier(.22,.61,.36,1)}
 
   /* ---------- Pasos ---------- */
   .paso{display:none;animation:fade .4s ease}
@@ -285,7 +338,7 @@
     width:54px;height:54px;border:1px solid var(--dorado);border-radius:50%;
     display:flex;align-items:center;justify-content:center;margin:0 auto 26px;
   }
-  .final .marca-sello span{width:11px;height:11px;background:var(--dorado);transform:rotate(45deg)}
+  .final .marca-sello span{width:11px;height:11px;background:var(--foil);transform:rotate(45deg)}
   .final h2{
     font-family:var(--serif);font-size:2rem;font-weight:500;
     margin-bottom:14px;line-height:1.2;
@@ -296,9 +349,12 @@
     background:var(--verde);color:var(--blanco-calido);
     font-family:var(--sans);font-weight:600;font-size:1rem;
     padding:16px 32px;border-radius:var(--radio);
-    text-decoration:none;transition:background .2s;border:none;cursor:pointer;
+    text-decoration:none;transition:background .2s,transform .12s,box-shadow .2s;border:none;cursor:pointer;
+    min-height:54px;touch-action:manipulation;
   }
-  .btn-whatsapp:hover{background:#0a3a2a}
+  .btn-whatsapp:hover{background:var(--verde-osc)}
+  .btn-whatsapp:active{transform:scale(.985)}
+  .btn-whatsapp:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(178,138,61,.22)}
   .btn-whatsapp svg{width:20px;height:20px;fill:currentColor}
   .final .nota{font-size:.84rem;color:rgba(14,75,54,.5);margin-top:22px}
 
@@ -321,10 +377,10 @@
 
   /* ---------- Consentimiento / privacidad ---------- */
   .consentimiento{margin-top:6px}
-  .check-consent{
+  .campo > label.check-consent{
     display:flex;align-items:flex-start;gap:11px;cursor:pointer;
-    font-size:.84rem;line-height:1.45;color:rgba(14,75,54,.7);
-    font-weight:400;text-transform:none;letter-spacing:0;
+    font-size:.84rem;line-height:1.5;color:rgba(14,75,54,.72);
+    font-weight:400;text-transform:none;letter-spacing:0;margin-bottom:0;
   }
   .check-consent input{
     appearance:none;-webkit-appearance:none;
@@ -340,12 +396,21 @@
   .check-consent input:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(178,138,61,.14)}
 
   /* ---------- Validación ---------- */
-  .error-msg{color:var(--vinotinto);font-size:.84rem;margin-top:14px;display:none}
-  .error-msg.visible{display:block}
+  .error-msg{color:var(--vinotinto);font-size:.86rem;margin-top:14px;display:none;font-weight:500}
+  .error-msg.visible{display:block;animation:fade .3s ease}
+
+  /* ---------- Reveal al hacer scroll (solo si hay JS, evita ocultar contenido) ---------- */
+  .js [data-reveal]{opacity:0;transform:translateY(16px);transition:opacity .7s ease, transform .7s cubic-bezier(.22,.61,.36,1)}
+  .js [data-reveal].visible{opacity:1;transform:none}
+
+  /* ---------- Respeto a quien prefiere menos movimiento ---------- */
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important}
+    .js [data-reveal]{opacity:1;transform:none}
+  }
 
   @media(max-width:560px){
-    .tarjeta{padding:32px 22px}
-    .wrap{padding:0 20px}
     .nav-btns{flex-direction:column-reverse}
     .btn{width:100%}
   }
@@ -357,7 +422,7 @@
 <header class="hero">
   <div class="wrap">
     <div class="marca">Casa Vestigio</div>
-    <h1>No todo lo que se guarda<br>vale. Saber <em>cuáles sí</em>,<br>ese es el oficio.</h1>
+    <h1>No todo lo que se guarda vale. Saber <em>cuáles sí</em>, ese es el oficio.</h1>
     <p class="bajada">Ventas privadas curadas en residencias. Valoramos, investigamos y presentamos sus piezas ante compradores reales. Nada se deja al azar.</p>
     <div class="sello"><span class="linea"></span><span class="diamante"></span><span class="linea"></span></div>
   </div>
@@ -365,16 +430,18 @@
 
 <!-- ============================ INTRO ============================ -->
 <section class="intro">
-  <div class="wrap">
-    <p>Lo que vale merece algo más que publicarlo y esperar. Cuéntenos qué le trae hasta aquí y demos el primer paso.</p>
+  <div class="wrap" data-reveal>
+    <p class="promesa">Lo que vale merece algo más que publicarlo y esperar.</p>
+    <p class="invitacion">Cuéntenos qué le trae hasta aquí y demos el primer paso.</p>
     <div class="categorias">Arte · Relojería · Cristal · Mobiliario · Objetos con historia</div>
+    <div class="discrecion">Con absoluta discreción</div>
   </div>
 </section>
 
 <!-- ============================ FORMULARIO ============================ -->
 <section class="form-zona">
   <div class="wrap">
-    <div class="tarjeta">
+    <div class="tarjeta" data-reveal>
 
       <div class="progreso" id="progreso" role="progressbar" aria-label="Progreso del formulario" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="barra" id="barra" style="width:0%"></div></div>
 
@@ -431,7 +498,7 @@
 
 <!-- ============================ FOOTER ============================ -->
 <footer>
-  <div class="wrap">
+  <div class="wrap" data-reveal>
     <div class="marca-pie">Casa Vestigio</div>
     <div>Ventas privadas curadas · Valoramos, investigamos y presentamos</div>
     <div class="ciudades">Caracas · Panamá · Miami</div>
@@ -464,11 +531,11 @@ P.contacto = `
   <p class="pregunta-sub">Usaremos estos datos para continuar la conversación por WhatsApp.</p>
   <div class="campo">
     <label for="nombre">Nombre y apellido <span class="ayuda">(requerido)</span></label>
-    <input type="text" id="nombre" name="nombre" required placeholder="Su nombre completo">
+    <input type="text" id="nombre" name="nombre" required autocomplete="name" placeholder="Su nombre completo">
   </div>
   <div class="campo">
     <label for="whatsapp">WhatsApp <span class="ayuda">(requerido — con código de país)</span></label>
-    <input type="tel" id="whatsapp" name="whatsapp" required placeholder="Ej: +58 412 000 0000">
+    <input type="tel" id="whatsapp" name="whatsapp" required autocomplete="tel" inputmode="tel" placeholder="Ej: +58 412 000 0000">
   </div>
   <div class="campo">
     <label for="ciudad">Ciudad <span class="ayuda">(requerido)</span></label>
@@ -482,7 +549,7 @@ P.contacto = `
   </div>
   <div class="campo">
     <label for="correo">Correo electrónico <span class="ayuda">(opcional)</span></label>
-    <input type="email" id="correo" name="correo" placeholder="tucorreo@ejemplo.com">
+    <input type="email" id="correo" name="correo" autocomplete="email" inputmode="email" placeholder="tucorreo@ejemplo.com">
   </div>
   <div class="campo consentimiento">
     <label class="check-consent">
@@ -696,21 +763,21 @@ function validarPaso(){
   const requeridos = cont.querySelectorAll('[required]');
   for(const el of requeridos){
     if(el.type==='checkbox'){
-      if(!el.checked){ mostrarError('Para continuar, por favor confirme la casilla de autorización.'); return false; }
+      if(!el.checked){ mostrarError('Para continuar, por favor confirme la casilla de autorización.'); try{el.focus()}catch(e){}; return false; }
     } else if(!el.value.trim()){
-      mostrarError('Por favor complete los campos requeridos para continuar.'); return false;
+      mostrarError('Por favor complete los campos requeridos para continuar.'); try{el.focus()}catch(e){}; return false;
     }
   }
   // Correo: opcional, pero si se llena debe tener formato válido
   const correo = cont.querySelector('input[type=email]');
   if(correo && correo.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo.value.trim())){
-    mostrarError('El correo electrónico no parece válido. Revíselo, por favor.'); return false;
+    mostrarError('El correo electrónico no parece válido. Revíselo, por favor.'); try{correo.focus()}catch(e){}; return false;
   }
   // WhatsApp: al menos 8 dígitos (con código de país)
   const tel = cont.querySelector('input[type=tel]');
   if(tel && tel.value.trim()){
     const digitos = tel.value.replace(/\D/g,'');
-    if(digitos.length < 8){ mostrarError('El número de WhatsApp parece incompleto. Incluya el código de país.'); return false; }
+    if(digitos.length < 8){ mostrarError('El número de WhatsApp parece incompleto. Incluya el código de país.'); try{tel.focus()}catch(e){}; return false; }
   }
   return true;
 }
@@ -766,6 +833,7 @@ function calcularPerfil(){
 
 function finalizar(){
   guardarPaso();
+  errorMsg.classList.remove('visible');
   const d = estado.datos;
   const {perfil, prioridad} = calcularPerfil();
   d._perfil = perfil;
@@ -846,6 +914,26 @@ function enviarAGoogleSheets(d){
     body: JSON.stringify(payload)
   }).catch(err => console.error('No se pudo guardar en la hoja:', err));
 }
+
+/* ============================================================
+   APARICIÓN SUAVE AL HACER SCROLL
+   El CSS oculta [data-reveal] solo cuando hay JS (.js), así el
+   contenido nunca queda invisible si el script no corre.
+   ============================================================ */
+(function(){
+  const items = document.querySelectorAll('[data-reveal]');
+  if(!items.length) return;
+  if(!('IntersectionObserver' in window)){
+    items.forEach(el=>el.classList.add('visible'));
+    return;
+  }
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.12, rootMargin:'0px 0px -8% 0px'});
+  items.forEach(el=>io.observe(el));
+})();
 </script>
 </body>
 </html>
