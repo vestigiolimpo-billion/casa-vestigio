@@ -6,6 +6,24 @@
 <title>Casa Vestigio — Ventas privadas curadas</title>
 <meta name="description" content="Valoramos, investigamos y presentamos sus piezas ante compradores reales. Nada se deja al azar. Ventas privadas curadas en residencias.">
 
+<!-- ===== Compartir en redes / WhatsApp (Open Graph) ===== -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Casa Vestigio">
+<meta property="og:title" content="Casa Vestigio — Ventas privadas curadas">
+<meta property="og:description" content="Valoramos, investigamos y presentamos sus piezas ante compradores reales. Nada se deja al azar.">
+<!-- TODO: cuando tengas una imagen alojada (1200x630px), descomenta y pon la URL:
+<meta property="og:image" content="https://TU-DOMINIO/casa-vestigio-og.jpg"> -->
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- ===== Favicon: diamante dorado de la marca (sin archivo externo) ===== -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230E4B36'/%3E%3Crect x='10.5' y='10.5' width='11' height='11' fill='%23B28A3D' transform='rotate(45 16 16)'/%3E%3C/svg%3E">
+
+<!-- ===== Tipografías de marca (van aquí; como @import dentro del CSS NO cargaban) ===== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+
 <style>
   /* ============================================================
      CASA VESTIGIO — Sistema de diseño
@@ -25,8 +43,6 @@
     --serif:'Cormorant Garamond', Georgia, 'Times New Roman', serif;
     --sans:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', sans-serif;
   }
-
-  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Hanken+Grotesk:wght@400;500;600&display=swap');
 
   *{box-sizing:border-box;margin:0;padding:0}
 
@@ -303,6 +319,26 @@
     color:var(--dorado);margin-top:14px;
   }
 
+  /* ---------- Consentimiento / privacidad ---------- */
+  .consentimiento{margin-top:6px}
+  .check-consent{
+    display:flex;align-items:flex-start;gap:11px;cursor:pointer;
+    font-size:.84rem;line-height:1.45;color:rgba(14,75,54,.7);
+    font-weight:400;text-transform:none;letter-spacing:0;
+  }
+  .check-consent input{
+    appearance:none;-webkit-appearance:none;
+    width:18px;height:18px;flex-shrink:0;margin-top:2px;
+    border:1.5px solid var(--dorado-tenue);border-radius:var(--radio);
+    background:var(--blanco-calido);cursor:pointer;transition:all .18s;position:relative;
+  }
+  .check-consent input:checked{background:var(--verde);border-color:var(--verde)}
+  .check-consent input:checked::after{
+    content:"";position:absolute;left:5px;top:1px;width:5px;height:10px;
+    border:solid var(--blanco-calido);border-width:0 2px 2px 0;transform:rotate(45deg);
+  }
+  .check-consent input:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(178,138,61,.14)}
+
   /* ---------- Validación ---------- */
   .error-msg{color:var(--vinotinto);font-size:.84rem;margin-top:14px;display:none}
   .error-msg.visible{display:block}
@@ -340,7 +376,7 @@
   <div class="wrap">
     <div class="tarjeta">
 
-      <div class="progreso"><div class="barra" id="barra" style="width:0%"></div></div>
+      <div class="progreso" id="progreso" role="progressbar" aria-label="Progreso del formulario" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="barra" id="barra" style="width:0%"></div></div>
 
       <!-- ====== PASO 0: PREGUNTA RAÍZ ====== -->
       <div class="paso activo" data-paso="0">
@@ -370,7 +406,7 @@
       <form id="form-vestigio" novalidate>
         <div id="pasos-dinamicos"></div>
 
-        <div class="error-msg" id="error">Por favor completa los campos requeridos para continuar.</div>
+        <div class="error-msg" id="error" role="alert" aria-live="assertive">Por favor complete los campos requeridos para continuar.</div>
 
         <div class="nav-btns" id="nav" style="display:none">
           <button type="button" class="btn btn-secundario" id="btn-atras">← Atrás</button>
@@ -409,6 +445,10 @@
 // Cambia este número por el WhatsApp real de Casa Vestigio (formato internacional sin + ni espacios)
 const WHATSAPP_NUMERO = "584120000000";
 
+// URL del Web App de Google Apps Script donde se guardan los leads.
+// Déjalo vacío hasta tenerlo: si está vacío, el formulario funciona igual (solo no guarda en la hoja).
+const SHEETS_ENDPOINT = "";
+
 /* ============================================================
    DEFINICIÓN DE PREGUNTAS POR CAMINO
    Cada paso es un objeto con su HTML. Las preguntas están
@@ -443,6 +483,12 @@ P.contacto = `
   <div class="campo">
     <label for="correo">Correo electrónico <span class="ayuda">(opcional)</span></label>
     <input type="email" id="correo" name="correo" placeholder="tucorreo@ejemplo.com">
+  </div>
+  <div class="campo consentimiento">
+    <label class="check-consent">
+      <input type="checkbox" id="consentimiento" name="consentimiento" required value="Sí">
+      <span>Autorizo a Casa Vestigio a contactarme sobre mi consulta. Mis datos se tratan con absoluta discreción y no se comparten con terceros.</span>
+    </label>
   </div>
 `;
 
@@ -609,7 +655,9 @@ function renderPaso(){
   pasosDinamicos.innerHTML = `<div class="paso activo">${estado.pasos[estado.indice]}</div>`;
   restaurar();
   const total = estado.pasos.length;
-  barra.style.width = ((estado.indice)/(total))*100 + '%';
+  const pct = Math.round((estado.indice/total)*100);
+  barra.style.width = pct + '%';
+  document.getElementById('progreso').setAttribute('aria-valuenow', pct);
   btnAtras.style.visibility = estado.indice===0 ? 'hidden':'visible';
   btnSiguiente.textContent = estado.indice===total-1 ? 'Finalizar y abrir WhatsApp' : 'Continuar';
   errorMsg.classList.remove('visible');
@@ -650,12 +698,33 @@ function restaurar(){
   });
 }
 
-// Validación mínima: solo el paso de contacto exige campos
+// Muestra un mensaje de error específico
+function mostrarError(msg){
+  errorMsg.textContent = msg;
+  errorMsg.classList.add('visible');
+}
+
+// Validación: campos requeridos + formato de correo/teléfono + consentimiento
 function validarPaso(){
   const cont = pasosDinamicos;
   const requeridos = cont.querySelectorAll('[required]');
   for(const el of requeridos){
-    if(!el.value.trim()){ return false; }
+    if(el.type==='checkbox'){
+      if(!el.checked){ mostrarError('Para continuar, por favor confirme la casilla de autorización.'); return false; }
+    } else if(!el.value.trim()){
+      mostrarError('Por favor complete los campos requeridos para continuar.'); return false;
+    }
+  }
+  // Correo: opcional, pero si se llena debe tener formato válido
+  const correo = cont.querySelector('input[type=email]');
+  if(correo && correo.value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(correo.value.trim())){
+    mostrarError('El correo electrónico no parece válido. Revíselo, por favor.'); return false;
+  }
+  // WhatsApp: al menos 8 dígitos (con código de país)
+  const tel = cont.querySelector('input[type=tel]');
+  if(tel && tel.value.trim()){
+    const digitos = tel.value.replace(/\D/g,'');
+    if(digitos.length < 8){ mostrarError('El número de WhatsApp parece incompleto. Incluya el código de país.'); return false; }
   }
   return true;
 }
@@ -765,10 +834,33 @@ function finalizar(){
   barra.style.width='100%';
   document.getElementById('final').classList.add('activo');
 
-  // ---- Punto de integración: aquí enviarías los datos a tu CRM / hoja / webhook ----
-  // Ejemplo (descomenta y ajusta la URL cuando tengas tu endpoint):
-  // fetch('https://TU_ENDPOINT', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(estado.datos)});
-  console.log("Datos del lead:", estado.datos);
+  // ---- Guardar el lead en Google Sheets (si el endpoint está configurado) ----
+  enviarAGoogleSheets(d);
+  console.log("Datos del lead:", d);
+}
+
+// Envía el lead al Web App de Google Apps Script. Si no hay endpoint, no hace nada.
+function enviarAGoogleSheets(d){
+  if(!SHEETS_ENDPOINT) return;
+  const payload = {
+    fecha: new Date().toISOString(),
+    interes: estado.camino,
+    nombre: d.nombre || '',
+    whatsapp: d.whatsapp || '',
+    ciudad: d.ciudad || '',
+    correo: d.correo || '',
+    perfil: d._perfil || '',
+    prioridad: d._prioridad || '',
+    consentimiento: d.consentimiento || '',
+    detalle: JSON.stringify(d)
+  };
+  // mode:'no-cors' + text/plain evita el bloqueo CORS típico de Apps Script.
+  fetch(SHEETS_ENDPOINT, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {'Content-Type': 'text/plain;charset=utf-8'},
+    body: JSON.stringify(payload)
+  }).catch(err => console.error('No se pudo guardar en la hoja:', err));
 }
 </script>
 </body>
