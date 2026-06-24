@@ -451,7 +451,7 @@
         <div class="caminos">
           <button type="button" class="camino" data-camino="vendedor">
             <span class="num">I</span>
-            <span class="txt"><strong>Quiero vender</strong><span>Tengo piezas, una colección o una residencia que deseo evaluar y vender.</span></span>
+            <span class="txt"><strong>Quiero vender</strong><span>Tengo piezas, una colección o una residencia que deseo valorar y vender.</span></span>
             <span class="flecha">→</span>
           </button>
           <button type="button" class="camino" data-camino="comprador">
@@ -565,7 +565,7 @@ P.contacto = `
 const PASOS_VENDEDOR = [
   // Paso V1 — qué piezas
   `<span class="paso-label">Sobre sus piezas</span>
-   <h2 class="pregunta">¿Qué tipo de piezas desea evaluar o vender?</h2>
+   <h2 class="pregunta">¿Qué tipo de piezas desea valorar o vender?</h2>
    <p class="pregunta-sub">Seleccione todas las que correspondan.</p>
    <div class="chips">
      ${['Arte / cuadros','Relojería','Cristal / Murano','Mobiliario','Porcelana / vajillas','Objetos de colección','Plata / oro','Bisutería','Lámparas / esculturas','Libros','Otros'].map((v,i)=>`
@@ -605,7 +605,7 @@ const PASOS_VENDEDOR = [
    <div class="campo">
      <label>¿Qué espera principalmente de Casa Vestigio?</label>
      <div class="opciones">
-       ${['Evaluación / orientación','Organización de la venta','Consignación','Compra directa','Una mezcla / no estoy seguro'].map((v,i)=>`
+       ${['Valoración / orientación','Organización de la venta','Consignación','Compra directa','Una mezcla / no estoy seguro'].map((v,i)=>`
          <div class="opcion"><input type="radio" id="ve${i}" name="vend_expectativa" value="${v}"><label for="ve${i}">${v}</label></div>`).join('')}
      </div>
    </div>
@@ -900,7 +900,7 @@ function finalizar(){
     texto="Hemos registrado sus intereses. Confirme su acceso por WhatsApp y comenzará a recibir oportunidades seleccionadas según su perfil.";
   } else if(estado.camino==='vendedor'){
     titulo="Gracias. Revisemos sus piezas.";
-    texto="Hemos recibido su información. El siguiente paso es conversar por WhatsApp y, si lo desea, compartir algunas fotos para una primera evaluación.";
+    texto="Hemos recibido su información. El siguiente paso es conversar por WhatsApp y, si lo desea, compartir algunas fotos para una primera valoración.";
   }
   document.getElementById('final-titulo').textContent=titulo;
   document.getElementById('final-texto').textContent=texto;
