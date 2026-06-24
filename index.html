@@ -922,17 +922,32 @@ function finalizar(){
 // Envía el lead al Web App de Google Apps Script. Si no hay endpoint, no hace nada.
 function enviarAGoogleSheets(d){
   if(!SHEETS_ENDPOINT) return;
+  const lista = v => Array.isArray(v) ? v.join(', ') : (v || '');
+  const interesTexto = estado.camino==='vendedor' ? 'Vender'
+                     : estado.camino==='comprador' ? 'Comprar' : 'Vender y comprar';
   const payload = {
     fecha: new Date().toISOString(),
-    interes: estado.camino,
+    interes: interesTexto,
     nombre: d.nombre || '',
     whatsapp: d.whatsapp || '',
     ciudad: d.ciudad || '',
     correo: d.correo || '',
     perfil: d._perfil || '',
     prioridad: d._prioridad || '',
-    consentimiento: d.consentimiento || '',
-    detalle: JSON.stringify(d)
+    // Camino "Vender"
+    vend_piezas: lista(d.vend_piezas),
+    vend_motivo: d.vend_motivo || '',
+    vend_volumen: d.vend_volumen || '',
+    vend_conoce: d.vend_conoce || '',
+    vend_expectativa: d.vend_expectativa || '',
+    vend_desc: d.vend_desc || '',
+    vend_visita: d.vend_visita || '',
+    // Camino "Comprar"
+    comp_intereses: lista(d.comp_intereses),
+    comp_proposito: d.comp_proposito || '',
+    comp_wa: d.comp_wa || '',
+    comp_busca: d.comp_busca || '',
+    consentimiento: lista(d.consentimiento)
   };
   // mode:'no-cors' + text/plain evita el bloqueo CORS típico de Apps Script.
   fetch(SHEETS_ENDPOINT, {
