@@ -547,6 +547,10 @@ P.contacto = `
       <option>Otra</option>
     </select>
   </div>
+  <div class="campo" id="campo-otra-ciudad" style="display:none">
+    <label for="ciudad-otra">¿Cuál ciudad? <span class="ayuda">(requerido)</span></label>
+    <input type="text" id="ciudad-otra" name="ciudad_otra" autocomplete="address-level2" placeholder="Escriba su ciudad">
+  </div>
   <div class="campo">
     <label for="correo">Correo electrónico <span class="ayuda">(opcional)</span></label>
     <input type="email" id="correo" name="correo" autocomplete="email" inputmode="email" placeholder="tucorreo@ejemplo.com">
@@ -707,6 +711,8 @@ function construirPasos(){
 function renderPaso(){
   pasosDinamicos.innerHTML = `<div class="paso activo">${estado.pasos[estado.indice]}</div>`;
   restaurar();
+  const selCiudad = pasosDinamicos.querySelector('#ciudad');
+  if(selCiudad) toggleOtraCiudad(selCiudad.value);
   const total = estado.pasos.length;
   const pct = Math.round((estado.indice/total)*100);
   barra.style.width = pct + '%';
@@ -798,6 +804,26 @@ btnAtras.addEventListener('click',()=>{
   if(estado.indice>0){ estado.indice--; renderPaso(); }
 });
 
+// Muestra el campo "¿Cuál ciudad?" solo cuando se elige "Otra" (y lo hace requerido)
+function toggleOtraCiudad(valor){
+  const wrap = document.getElementById('campo-otra-ciudad');
+  const inp = document.getElementById('ciudad-otra');
+  if(!wrap || !inp) return;
+  if(valor === 'Otra'){
+    wrap.style.display = 'block';
+    inp.required = true;
+  } else {
+    wrap.style.display = 'none';
+    inp.required = false;
+    inp.value = '';
+    if(estado.datos) delete estado.datos.ciudad_otra;
+  }
+}
+// Delegación: el select #ciudad se re-crea en cada render
+pasosDinamicos.addEventListener('change', e=>{
+  if(e.target && e.target.id === 'ciudad') toggleOtraCiudad(e.target.value);
+});
+
 /* ============================================================
    PERFILADO AUTOMÁTICO + ENRUTAMIENTO A WHATSAPP
    ============================================================ */
@@ -835,6 +861,8 @@ function finalizar(){
   guardarPaso();
   errorMsg.classList.remove('visible');
   const d = estado.datos;
+  // Si la ciudad es "Otra", usar la ciudad escrita a mano
+  if(d.ciudad === 'Otra' && d.ciudad_otra) d.ciudad = d.ciudad_otra;
   const {perfil, prioridad} = calcularPerfil();
   d._perfil = perfil;
   d._prioridad = prioridad;
