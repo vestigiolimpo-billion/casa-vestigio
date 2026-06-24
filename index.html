@@ -499,7 +499,7 @@ const PASOS_VENDEDOR = [
    <h2 class="pregunta">¿Qué tipo de piezas desea evaluar o vender?</h2>
    <p class="pregunta-sub">Seleccione todas las que correspondan.</p>
    <div class="chips">
-     ${['Arte / cuadros','Relojería','Cristal / Murano','Mobiliario','Porcelana / vajillas','Objetos de colección','Plata / oro','Lámparas / esculturas','Libros','Otros'].map((v,i)=>`
+     ${['Arte / cuadros','Relojería','Cristal / Murano','Mobiliario','Porcelana / vajillas','Objetos de colección','Plata / oro','Bisutería','Lámparas / esculturas','Libros','Otros'].map((v,i)=>`
        <div class="chip"><input type="checkbox" id="vp${i}" name="vend_piezas" value="${v}"><label for="vp${i}">${v}</label></div>`).join('')}
    </div>`,
 
@@ -536,7 +536,7 @@ const PASOS_VENDEDOR = [
    <div class="campo">
      <label>¿Qué espera principalmente de Casa Vestigio?</label>
      <div class="opciones">
-       ${['Evaluación / orientación','Organización de la venta','Venta por comisión','Compra directa','Una mezcla / no estoy seguro'].map((v,i)=>`
+       ${['Evaluación / orientación','Organización de la venta','Consignación','Compra directa','Una mezcla / no estoy seguro'].map((v,i)=>`
          <div class="opcion"><input type="radio" id="ve${i}" name="vend_expectativa" value="${v}"><label for="ve${i}">${v}</label></div>`).join('')}
      </div>
    </div>
@@ -575,13 +575,6 @@ const PASOS_COMPRADOR = [
        ${['Uso personal','Colección','Decoración','Reventa','Diseño de interiores','Inversión'].map((v,i)=>`
          <div class="opcion"><input type="radio" id="cpr${i}" name="comp_proposito" value="${v}"><label for="cpr${i}">${v}</label></div>`).join('')}
      </div>
-   </div>
-   <div class="campo">
-     <label>Rango aproximado de compra por pieza</label>
-     <div class="opciones">
-       ${['Menos de $100','$100 – $500','$500 – $1.500','$1.500 – $5.000','Más de $5.000'].map((v,i)=>`
-         <div class="opcion"><input type="radio" id="cr${i}" name="comp_rango" value="${v}"><label for="cr${i}">${v}</label></div>`).join('')}
-     </div>
    </div>`,
 
   // Paso C3 — comportamiento
@@ -591,15 +584,8 @@ const PASOS_COMPRADOR = [
    <div class="campo">
      <label>¿Desea recibir oportunidades por WhatsApp?</label>
      <div class="opciones">
-       ${['Sí, con gusto','Prefiero por correo','Solo cuando aparezca algo muy específico'].map((v,i)=>`
+       ${['Sí, con gusto','Prefiero por correo'].map((v,i)=>`
          <div class="opcion"><input type="radio" id="cw${i}" name="comp_wa" value="${v}"><label for="cw${i}">${v}</label></div>`).join('')}
-     </div>
-   </div>
-   <div class="campo">
-     <label>Si una pieza le interesa, ¿suele concretar rápido?</label>
-     <div class="opciones">
-       ${['Sí, decido rápido','Depende de la pieza','Necesito pensarlo con calma'].map((v,i)=>`
-         <div class="opcion"><input type="radio" id="cc${i}" name="comp_decision" value="${v}"><label for="cc${i}">${v}</label></div>`).join('')}
      </div>
    </div>
    <div class="campo">
@@ -768,11 +754,10 @@ function calcularPerfil(){
   // --- Perfil de comprador (segmentación Círculo Vestigio A/B/C/D) ---
   if(estado.camino==='comprador' || estado.camino==='ambos'){
     let lista="D — Particulares";
-    const rango=d.comp_rango||"";
     const prop=d.comp_proposito||"";
     if(prop==='Reventa') lista="C — Revendedores";
-    else if(['Más de $5.000','$1.500 – $5.000'].includes(rango) || (d.comp_intereses||[]).some(i=>['Relojería','Arte'].includes(i))) lista="A — Premium";
-    else if(['Colección','Decoración','Diseño de interiores'].includes(prop) || ['$500 – $1.500'].includes(rango)) lista="B — Coleccionistas / Decoración";
+    else if((d.comp_intereses||[]).some(i=>['Relojería','Arte'].includes(i))) lista="A — Premium";
+    else if(['Colección','Decoración','Diseño de interiores'].includes(prop)) lista="B — Coleccionistas / Decoración";
     perfil.push('Comprador '+lista);
   }
 
@@ -808,7 +793,6 @@ function finalizar(){
     L.push("— Comprar —");
     if(d.comp_intereses) L.push("• Intereses: "+d.comp_intereses.join(', '));
     if(d.comp_proposito) L.push("• Propósito: "+d.comp_proposito);
-    if(d.comp_rango) L.push("• Rango: "+d.comp_rango);
   }
 
   const mensaje = encodeURIComponent(L.join("\n"));
